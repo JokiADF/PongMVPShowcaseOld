@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 586678adcc98adc47a9e73e47e9851cf, type: 3}
+  m_Name: GameConfigInstaller
+  m_EditorClassIdentifier: 
+  player:
+    attempts: 10
+    speed: 5
+    spawnPosition: {x: 7.5, y: 0, z: -1}
+  level:
+    bounds: {x: 7.5, y: 3.5, z: 11}
