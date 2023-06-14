@@ -23,15 +23,9 @@ namespace CodeBase.Installers
 
         private void BindPlayer()
         {
-            Container
-                .Bind<PlayerModel>()
-                .AsSingle();
-            Container
-                .Bind<PlayerSpawner>()
-                .AsSingle();
-            Container
-                .BindFactory<Object, PlayerPresenter, PlayerPresenter.Factory>()
-                .FromFactory<PrefabFactory<PlayerPresenter>>();
+            Container.Bind<PlayerModel>().AsSingle();
+            Container.BindInterfacesAndSelfTo<PlayerSpawner>().AsSingle();
+            Container.BindFactory<Object, PlayerPresenter, PlayerPresenter.Factory>().FromFactory<PrefabFactory<PlayerPresenter>>();
         }
     }
 }

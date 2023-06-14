@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using CodeBase.Services.AssetManagement;
+using CodeBase.Services.Spawners.Player;
+using UnityEngine;
 
 namespace CodeBase.Infrastructure.States
 {
@@ -10,12 +13,12 @@ namespace CodeBase.Infrastructure.States
 
         public Type ActiveStateType => _activeState.GetType();
 
-        public GameStateMachine(SceneLoader sceneLoader)
+        public GameStateMachine(SceneLoader sceneLoader, IAssetService assetService)
         {
             _states = new Dictionary<Type, IExitableState>
             {
                 [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader),
-                [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader),
+                [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, assetService),
                 [typeof(GameLoopState)] = new GameLoopState(this, sceneLoader),
             };
         }

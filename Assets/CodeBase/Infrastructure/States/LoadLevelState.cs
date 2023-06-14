@@ -1,6 +1,7 @@
 ﻿using CodeBase.Services.AssetManagement;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Zenject;
 
 namespace CodeBase.Infrastructure.States
 {
@@ -10,8 +11,8 @@ namespace CodeBase.Infrastructure.States
         
         private readonly GameStateMachine _stateMachine;
         private readonly SceneLoader _sceneLoader;
-        private readonly IAssetService _assetService;
-
+        private IAssetService _assetService;
+        
         public LoadLevelState(GameStateMachine stateMachine, SceneLoader sceneLoader, IAssetService assetService)
         {
             _stateMachine = stateMachine;
@@ -32,6 +33,7 @@ namespace CodeBase.Infrastructure.States
         private async UniTask LoadAssetsAsync()
         {
             await _assetService.Load<GameObject>(AssetName.Objects.Player);
+            await _assetService.Load<Material>(AssetName.Materials.Background);
         }
 
         public void Exit()

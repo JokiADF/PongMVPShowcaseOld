@@ -19,20 +19,23 @@ namespace CodeBase.Model
     public class LevelConfig
     {
         public Vector3 bounds = new Vector3(7.5f, 3.5f, 11f);
-        
-        private const float RefAspectRatio = 16f / 9;
-        private readonly float _currentAspectRatio = Screen.width / (float)Screen.height;
 
         public bool IsPosOutOfHorizontalBounds(Vector3 pos)
         {
-            var boundX = bounds.x * (_currentAspectRatio / RefAspectRatio);
+            const float refAspectRatio = 16f / 9;
+            var currentAspectRatio = Screen.width / (float)Screen.height;
+            
+            var boundX = bounds.x * (currentAspectRatio / refAspectRatio);
 
             return pos.x > boundX || pos.x < -boundX;
         }
 
         public bool IsPosOutOfVerticalBounds(Vector3 pos)
         {
-            var boundY = bounds.y * (_currentAspectRatio / RefAspectRatio);
+            const float refAspectRatio = 9 / 16f;
+            var currentAspectRatio = (float)Screen.height / Screen.width;
+            
+            var boundY = bounds.y * (currentAspectRatio / refAspectRatio);
             
             return pos.y > boundY || pos.y < -boundY;
         }

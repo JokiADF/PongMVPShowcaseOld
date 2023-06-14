@@ -21,9 +21,6 @@ namespace CodeBase.Presenters
         
         private void Start()
         {
-            _playerConfig = new PlayerConfig();
-            _player = new PlayerModel(_playerConfig, new LevelConfig());
-            
             _player.Reset();
             _player.Position
                 .Subscribe(pos => transform.position = pos)

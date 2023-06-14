@@ -29,14 +29,18 @@ namespace CodeBase.Presenters
             buttonVertical.gameObject.SetActive(false);
 #endif
 
-            Observable.EveryUpdate().Where(_ => _stateMachine.ActiveStateType == typeof(GameLoopState)).Subscribe(_ =>
+            Observable
+                .EveryUpdate()
+                .Where(_ => _stateMachine.ActiveStateType == typeof(GameLoopState))
+                .Subscribe(_ =>
             {
 #if UNITY_EDITOR
                 _input.Vertical = Input.GetAxisRaw(AxisVertical);
 #else
                 _input.Vertical = buttonVertical.Axis;
 #endif
-            }).AddTo(this);
+            })
+                .AddTo(this);
         }
     }
 }

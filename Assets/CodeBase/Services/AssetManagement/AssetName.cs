@@ -13,6 +13,7 @@ namespace CodeBase.Services.AssetManagement
 
         public class Materials
         {
+            public const string Background = "Space";
         }
     }
 }

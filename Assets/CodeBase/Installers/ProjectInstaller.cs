@@ -13,29 +13,34 @@ namespace CodeBase.Installers
         
         public override void InstallBindings()
         {
-            BindGame();
             BindServices();
-        }
-
-        private void BindGame()
-        {
-            var loadingPresenter = Instantiate(prefab);
-            var game = new Game(loadingPresenter);
-            Container
-                .Bind<Game>()
-                .FromInstance(game)
-                .AsSingle();
-            Container
-                .Bind<GameStateMachine>()
-                .FromInstance(game.StateMachine)
-                .AsSingle();
-            game.StateMachine.Enter<BootstrapState>();
+            BindSceneLoader();
+            BindGame();
         }
 
         private void BindServices()
         {
             Container
                 .BindInterfacesAndSelfTo<AddressablesService>()
+                .AsSingle();
+        }
+
+        private void BindSceneLoader()
+        {
+            var loadingPresenter = Instantiate(prefab);
+            Container
+                .Bind<SceneLoader>()
+                .FromInstance(new SceneLoader(loadingPresenter))
+                .AsSingle();
+        }
+
+        private void BindGame()
+        {
+            Container
+                .Bind<Game>()
+                .AsSingle();
+            Container
+                .Bind<GameStateMachine>()
                 .AsSingle();
         }
     }

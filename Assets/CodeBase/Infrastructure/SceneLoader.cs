@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Threading.Tasks;
 using CodeBase.Presenters;
 using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;

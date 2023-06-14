@@ -1,5 +1,7 @@
 ﻿using CodeBase.Infrastructure.States;
 using CodeBase.Presenters;
+using UnityEngine;
+using Zenject;
 
 namespace CodeBase.Infrastructure
 {
@@ -7,9 +9,10 @@ namespace CodeBase.Infrastructure
     {
         public readonly GameStateMachine StateMachine;
 
-        public Game(LoadingPresenter loadingPresenter)
+        public Game(GameStateMachine stateMachine)
         {
-            StateMachine = new GameStateMachine(new SceneLoader(loadingPresenter));
+            StateMachine = stateMachine;
         }
+        
     }
 }
