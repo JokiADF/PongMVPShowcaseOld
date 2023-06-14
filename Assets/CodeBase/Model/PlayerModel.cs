@@ -18,7 +18,7 @@ namespace CodeBase.Model
     [Serializable]
     public class LevelConfig
     {
-        public Vector3 bounds = new Vector3(7.5f, 3.5f, 11f);
+        public Vector3 bounds = new Vector3(7.8f, 3.5f, 11f);
 
         public bool IsPosOutOfHorizontalBounds(Vector3 pos)
         {
