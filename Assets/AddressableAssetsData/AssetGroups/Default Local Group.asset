@@ -29,6 +29,10 @@ MonoBehaviour:
     m_Address: Ball
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 42f7d44018c3ea0428bc7e351150ca6d
+    m_Address: Enemy
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 046f44444bb492241a173576b84cd31d, type: 2}
   m_SchemaSet:

@@ -1,26 +1,26 @@
-using CodeBase.Model;
+﻿using CodeBase.Model;
 using UniRx;
 using UnityEngine;
 using Zenject;
 
 namespace CodeBase.Presenters
 {
-    public class PlayerPresenter : MonoBehaviour
+    public class EnemyPresenter : MonoBehaviour
     {
-        private PlayerModel _player;
-        private InputModel _input;
+        private EnemyModel _enemy;
+        private BallModel _ball;
 
         [Inject]
-        private void Construct(PlayerModel player, InputModel input)
+        private void Construct(EnemyModel enemy, BallModel ball)
         {
-            _player = player;
-            _input = input;
+            _enemy = enemy;
+            _ball = ball;
         }
         
         private void Start()
         {
-            _player.Reset();
-            _player.Position
+            _enemy.Reset();
+            _enemy.Position
                 .Subscribe(pos => transform.position = pos)
                 .AddTo(this);
 
@@ -31,9 +31,9 @@ namespace CodeBase.Presenters
         }
         
         private void Move() => 
-            _player.Move(_input.Vertical, Time.deltaTime);
+            _enemy.Move(_ball.Position.Value, Time.deltaTime);
 
-        public class Factory : PlaceholderFactory<Object, PlayerPresenter>
+        public class Factory : PlaceholderFactory<Object, EnemyPresenter>
         {
         }
     }

@@ -33,6 +33,9 @@ namespace CodeBase.Infrastructure.States
         private async UniTask LoadAssetsAsync()
         {
             await _assetService.Load<GameObject>(AssetName.Objects.Player);
+            await _assetService.Load<GameObject>(AssetName.Objects.Enemy);
+            await _assetService.Load<GameObject>(AssetName.Objects.Ball);
+            
             await _assetService.Load<Material>(AssetName.Materials.Background);
         }
 

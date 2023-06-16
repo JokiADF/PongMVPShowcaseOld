@@ -1,6 +1,7 @@
 using CodeBase.Infrastructure.States;
 using CodeBase.Services.AssetManagement;
 using CodeBase.Services.Spawners.Ball;
+using CodeBase.Services.Spawners.Enemy;
 using CodeBase.Services.Spawners.Player;
 using UniRx;
 using UnityEngine;
@@ -15,14 +16,17 @@ namespace CodeBase.Presenters
         private GameStateMachine _stateMachine;
         private IAssetService _assetService;
         private IPlayerSpawner _playerSpawner;
+        private IEnemySpawner _enemySpawner;
         private IBallSpawner _ballSpawner;
 
         [Inject]
-        private void Construct(GameStateMachine stateMachine, IAssetService assetService, IPlayerSpawner playerSpawner, IBallSpawner ballSpawner)
+        private void Construct(GameStateMachine stateMachine, IAssetService assetService, IPlayerSpawner playerSpawner, IEnemySpawner enemySpawner, IBallSpawner ballSpawner)
         {
             _stateMachine = stateMachine;
             _assetService = assetService;
+            
             _playerSpawner = playerSpawner;
+            _enemySpawner = enemySpawner;
             _ballSpawner = ballSpawner;
         }
         
@@ -33,7 +37,6 @@ namespace CodeBase.Presenters
 
             OnGameplayStarted();
             
-            // Control enemies during gameplay
             Observable.EveryUpdate()
                 .Where(_ => _stateMachine.ActiveStateType == typeof(GameLoopState))
                 .Subscribe(_ => GameplayLoop())
@@ -46,12 +49,14 @@ namespace CodeBase.Presenters
         private void OnGameplayStarted()
         {
             _playerSpawner.Spawn();
+            _enemySpawner.Spawn();
             _ballSpawner.Spawn();
         }
 
         private void OnGameplayEnded()
         {
             _playerSpawner.Despawn();
+            _enemySpawner.Despawn();
             _ballSpawner.Despawn();
         }
     }

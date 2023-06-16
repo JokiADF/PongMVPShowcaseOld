@@ -1,6 +1,7 @@
 using CodeBase.Model;
 using CodeBase.Presenters;
 using CodeBase.Services.Spawners.Ball;
+using CodeBase.Services.Spawners.Enemy;
 using CodeBase.Services.Spawners.Player;
 using UnityEngine;
 using Zenject;
@@ -13,6 +14,7 @@ namespace CodeBase.Installers
         {
             BindServices();
             BindPlayer();
+            BindEnemy();
             BindBall();
         }
 
@@ -28,6 +30,13 @@ namespace CodeBase.Installers
             Container.Bind<PlayerModel>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerSpawner>().AsSingle();
             Container.BindFactory<Object, PlayerPresenter, PlayerPresenter.Factory>().FromFactory<PrefabFactory<PlayerPresenter>>();
+        }
+
+        private void BindEnemy()
+        {
+            Container.Bind<EnemyModel>().AsSingle();
+            Container.BindInterfacesAndSelfTo<EnemySpawner>().AsSingle();
+            Container.BindFactory<Object, EnemyPresenter, EnemyPresenter.Factory>().FromFactory<PrefabFactory<EnemyPresenter>>();
         }
 
         private void BindBall()

@@ -34,7 +34,7 @@ namespace CodeBase.Presenters
         private void OnCollisionEnter(Collision collision) => 
             _ball.Clash(collision);
 
-        public class Factory : PlaceholderFactory<UnityEngine.Object, BallPresenter>
+        public class Factory : PlaceholderFactory<Object, BallPresenter>
         {
         }
     }

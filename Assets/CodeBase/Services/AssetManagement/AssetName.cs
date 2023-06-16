@@ -5,6 +5,7 @@ namespace CodeBase.Services.AssetManagement
         public class Objects
         {
             public const string Player = "Player";
+            public const string Enemy = "Enemy";
             public const string Ball = "Ball";
         }
 

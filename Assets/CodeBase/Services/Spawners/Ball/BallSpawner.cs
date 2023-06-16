@@ -9,7 +9,7 @@ namespace CodeBase.Services.Spawners.Ball
         private readonly BallPresenter.Factory _factory;
         private readonly IAssetService _assetService;
 
-        private BallPresenter _player;
+        private BallPresenter _ball;
 
         public BallSpawner(BallPresenter.Factory factory, IAssetService assetService)
         {
@@ -24,16 +24,16 @@ namespace CodeBase.Services.Spawners.Ball
             if (prefab == null)
                 return;
 
-            _player = _factory.Create(prefab);
+            _ball = _factory.Create(prefab);
         }
 
         public void Despawn()
         {
-            if (_player == null)
+            if (_ball == null)
                 return;
 
-            Object.Destroy(_player.gameObject);
-            _player = null;
+            Object.Destroy(_ball.gameObject);
+            _ball = null;
         }
     }
 }
