@@ -1,5 +1,6 @@
 using CodeBase.Infrastructure.States;
 using CodeBase.Services.AssetManagement;
+using CodeBase.Services.Spawners.Ball;
 using CodeBase.Services.Spawners.Player;
 using UniRx;
 using UnityEngine;
@@ -14,13 +15,15 @@ namespace CodeBase.Presenters
         private GameStateMachine _stateMachine;
         private IAssetService _assetService;
         private IPlayerSpawner _playerSpawner;
+        private IBallSpawner _ballSpawner;
 
         [Inject]
-        private void Construct(GameStateMachine stateMachine, IAssetService assetService, IPlayerSpawner playerSpawner)
+        private void Construct(GameStateMachine stateMachine, IAssetService assetService, IPlayerSpawner playerSpawner, IBallSpawner ballSpawner)
         {
             _stateMachine = stateMachine;
             _assetService = assetService;
             _playerSpawner = playerSpawner;
+            _ballSpawner = ballSpawner;
         }
         
         private void Start()
@@ -40,10 +43,16 @@ namespace CodeBase.Presenters
         private void GameplayLoop()
         {}
 
-        private void OnGameplayStarted() => 
+        private void OnGameplayStarted()
+        {
             _playerSpawner.Spawn();
+            _ballSpawner.Spawn();
+        }
 
-        private void OnGameplayEnded() => 
+        private void OnGameplayEnded()
+        {
             _playerSpawner.Despawn();
+            _ballSpawner.Despawn();
+        }
     }
 }

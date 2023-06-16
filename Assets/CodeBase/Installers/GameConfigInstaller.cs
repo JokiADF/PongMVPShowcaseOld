@@ -8,11 +8,13 @@ namespace CodeBase.Installers
     public class GameConfigInstaller : ScriptableObjectInstaller<GameConfigInstaller>
     {
         [SerializeField] private PlayerConfig player;
+        [SerializeField] private BallConfig ball;
         [SerializeField] private LevelConfig level;
 
         public override void InstallBindings()
         {
             Container.BindInstances(player);
+            Container.BindInstances(ball);
             Container.BindInstances(level);
         }
     }

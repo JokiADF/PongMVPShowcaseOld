@@ -16,8 +16,6 @@ namespace CodeBase.Model
         public Vector3 velocity = Vector3.zero;
         [Tooltip("Rebound force")]
         public float bounceStrength = 5f;
-        [Tooltip("Magnitude impulse")]
-        public float impulseMagnitude = 2.5f;
     }
 
     public class BallModel

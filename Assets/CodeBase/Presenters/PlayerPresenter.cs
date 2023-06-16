@@ -8,14 +8,12 @@ namespace CodeBase.Presenters
     public class PlayerPresenter : MonoBehaviour
     {
         private PlayerModel _player;
-        private PlayerConfig _playerConfig;
         private InputModel _input;
 
         [Inject]
-        private void Construct(PlayerModel player, PlayerConfig playerConfig, InputModel input)
+        private void Construct(PlayerModel player, InputModel input)
         {
             _player = player;
-            _playerConfig = playerConfig;
             _input = input;
         }
         
