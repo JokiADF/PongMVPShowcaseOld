@@ -25,11 +25,13 @@ namespace CodeBase.Model
     
         private readonly BallConfig _ballConfig;
         private readonly LevelConfig _levelConfig;
+        private readonly GameplayModel _gameplay;
 
-        public BallModel(BallConfig ballConfig, LevelConfig levelConfig)
+        public BallModel(BallConfig ballConfig, LevelConfig levelConfig, GameplayModel gameplay)
         {
             _ballConfig = ballConfig;
             _levelConfig = levelConfig;
+            _gameplay = gameplay;
 
             Position = new Vector3ReactiveProperty(_ballConfig.spawnPosition);
             Velocity = new Vector3ReactiveProperty(_ballConfig.velocity);
@@ -62,6 +64,11 @@ namespace CodeBase.Model
 
             if (_levelConfig.IsPosOutOfHorizontalBounds(Position.Value + deltaPos))
             {
+                if ((Position.Value + deltaPos).x > 0)
+                    _gameplay.CurrentEnemyScore.Value++;
+                else 
+                    _gameplay.CurrentPlayerScore.Value++;
+                
                 Reset();
                 
                 return;

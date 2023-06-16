@@ -16,6 +16,7 @@ namespace CodeBase.Installers
             BindPlayer();
             BindEnemy();
             BindBall();
+            BindGameplay();
         }
 
         private void BindServices()
@@ -44,6 +45,11 @@ namespace CodeBase.Installers
             Container.Bind<BallModel>().AsSingle();
             Container.BindInterfacesAndSelfTo<BallSpawner>().AsSingle();
             Container.BindFactory<Object, BallPresenter, BallPresenter.Factory>().FromFactory<PrefabFactory<BallPresenter>>();
+        }
+
+        private void BindGameplay()
+        {
+            Container.Bind<GameplayModel>().AsSingle();
         }
     }
 }
