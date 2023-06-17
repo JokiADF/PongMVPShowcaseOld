@@ -8,7 +8,7 @@ namespace CodeBase.Model
     public class PlayerConfig
     {
         [Tooltip("Number of attempts.")]
-        public int attempts = 10;
+        public int attempts = 1;
         [Tooltip("Vertical speed in m/s.")]
         public float speed = 5.0f;
         [Tooltip("Position of the player at start.")]
@@ -18,7 +18,7 @@ namespace CodeBase.Model
     [Serializable]
     public class LevelConfig
     {
-        public Vector3 bounds = new Vector3(7.8f, 3.5f, 11f);
+        public Vector3 bounds = new Vector3(9f, 4.5f, 11f);
 
         public bool IsPosOutOfHorizontalBounds(Vector3 pos)
         {
@@ -44,8 +44,6 @@ namespace CodeBase.Model
     public class PlayerModel
     {
         public Vector3ReactiveProperty Position { get; private set; }
-        public ReactiveProperty<int> Attempts { get; private set; }
-        public ReadOnlyReactiveProperty<bool> IsDead { get; private set; }
         
         private readonly PlayerConfig _playerConfig;
         private readonly LevelConfig _levelConfig;
@@ -56,18 +54,10 @@ namespace CodeBase.Model
             _levelConfig = levelConfig;
 
             Position = new Vector3ReactiveProperty(_playerConfig.spawnPosition);
-            Attempts = new ReactiveProperty<int>(_playerConfig.attempts);
-
-            IsDead = Attempts
-                .Select(attempts => attempts <= 0)
-                .ToReadOnlyReactiveProperty();
         }
 
-        public void Reset()
-        {
+        public void Reset() => 
             Position.Value = _playerConfig.spawnPosition;
-            Attempts.Value = _playerConfig.attempts;
-        }
 
         public void Move(float vertical, float deltaTime)
         {

@@ -1,5 +1,6 @@
 ﻿using CodeBase.Model;
 using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 using Zenject;
 
@@ -26,13 +27,15 @@ namespace CodeBase.Presenters
                 .EveryFixedUpdate()
                 .Subscribe(_ => Move())
                 .AddTo(this);
+
+            this
+                .OnCollisionEnterAsObservable()
+                .Subscribe(collision => _ball.Clash(collision))
+                .AddTo(this);
         }
 
         private void Move() =>
             _ball.Move(Time.fixedDeltaTime);
-
-        private void OnCollisionEnter(Collision collision) => 
-            _ball.Clash(collision);
 
         public class Factory : PlaceholderFactory<Object, BallPresenter>
         {

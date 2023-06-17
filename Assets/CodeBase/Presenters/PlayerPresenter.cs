@@ -1,7 +1,9 @@
+using System;
 using CodeBase.Model;
 using UniRx;
 using UnityEngine;
 using Zenject;
+using Object = UnityEngine.Object;
 
 namespace CodeBase.Presenters
 {
@@ -29,7 +31,7 @@ namespace CodeBase.Presenters
                 .Subscribe(_ => Move())
                 .AddTo(this);
         }
-        
+
         private void Move() => 
             _player.Move(_input.Vertical, Time.deltaTime);
 

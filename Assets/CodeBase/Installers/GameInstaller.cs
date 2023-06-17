@@ -13,17 +13,15 @@ namespace CodeBase.Installers
         public override void InstallBindings()
         {
             BindServices();
+            BindGameplay();
             BindPlayer();
             BindEnemy();
             BindBall();
-            BindGameplay();
         }
 
         private void BindServices()
         {
-            Container
-                .Bind<InputModel>()
-                .AsSingle();
+            Container.Bind<InputModel>().AsSingle();
         }
 
         private void BindPlayer()

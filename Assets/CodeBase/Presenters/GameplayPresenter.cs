@@ -10,8 +10,8 @@ namespace CodeBase.Presenters
 {
     public class GameplayPresenter : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI labelPlayerScore;
-        [SerializeField] private TextMeshProUGUI labelEnemyScore;
+        [SerializeField] private TextMeshPro labelPlayerScore;
+        [SerializeField] private TextMeshPro labelEnemyScore;
 
         private GameplayModel _gameplay;
 
@@ -23,23 +23,35 @@ namespace CodeBase.Presenters
 
         private void Start()
         {
-            _gameplay.CurrentPlayerScore.SubscribeToText(labelPlayerScore).AddTo(this);
-            _gameplay.CurrentEnemyScore.SubscribeToText(labelEnemyScore).AddTo(this);
+            _gameplay.CurrentPlayerScore
+                .SubscribeToText(labelPlayerScore)
+                .AddTo(this);
+            _gameplay.CurrentEnemyScore
+                .SubscribeToText(labelEnemyScore)
+                .AddTo(this);
 
-            _gameplay.CurrentPlayerScore.Pairwise().Where(score => score.Current > score.Previous).Subscribe(_ =>
-            {
-                labelPlayerScore.rectTransform
-                    .DOPunchScale(new Vector3(0.25f, 0.25f, 0f), 0.125f)
-                    .SetEase(Ease.OutQuint)
-                    .OnComplete(() => labelPlayerScore.rectTransform.localScale = Vector3.one);
-            }).AddTo(this);
-            _gameplay.CurrentEnemyScore.Pairwise().Where(score => score.Current > score.Previous).Subscribe(_ =>
-            {
-                labelEnemyScore.rectTransform
-                    .DOPunchScale(new Vector3(0.25f, 0.25f, 0f), 0.125f)
-                    .SetEase(Ease.OutQuint)
-                    .OnComplete(() => labelEnemyScore.rectTransform.localScale = Vector3.one);
-            }).AddTo(this);
+            _gameplay.CurrentPlayerScore
+                .Pairwise()
+                .Where(score => score.Current > score.Previous)
+                .Subscribe(_ =>
+                {
+                    labelPlayerScore.rectTransform
+                        .DOPunchScale(new Vector3(0.25f, 0.25f, 0f), 0.125f)
+                        .SetEase(Ease.OutQuint)
+                        .OnComplete(() => labelPlayerScore.rectTransform.localScale = Vector3.one);
+                })
+                .AddTo(this);
+            _gameplay.CurrentEnemyScore
+                .Pairwise()
+                .Where(score => score.Current > score.Previous)
+                .Subscribe(_ =>
+                {
+                    labelEnemyScore.rectTransform
+                        .DOPunchScale(new Vector3(0.25f, 0.25f, 0f), 0.125f)
+                        .SetEase(Ease.OutQuint)
+                        .OnComplete(() => labelEnemyScore.rectTransform.localScale = Vector3.one);
+                })
+                .AddTo(this);
         }
     }
 }

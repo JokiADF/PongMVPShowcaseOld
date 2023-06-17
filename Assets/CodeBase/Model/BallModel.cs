@@ -80,7 +80,7 @@ namespace CodeBase.Model
         public void Clash(Collision collision)
         {
             var normal = collision.GetContact(0).normal;
-            Velocity.Value += normal.normalized * _ballConfig.bounceStrength; // * _ballConfig.impulseMagnitude
+            Velocity.Value += normal.normalized * _ballConfig.bounceStrength;
         }
     }
 }

@@ -1,4 +1,5 @@
 using CodeBase.Infrastructure.States;
+using CodeBase.Model;
 using CodeBase.Services.AssetManagement;
 using CodeBase.Services.Spawners.Ball;
 using CodeBase.Services.Spawners.Enemy;
@@ -15,19 +16,28 @@ namespace CodeBase.Presenters
 
         private GameStateMachine _stateMachine;
         private IAssetService _assetService;
+        private GameplayModel _gameplay;
+        
         private IPlayerSpawner _playerSpawner;
         private IEnemySpawner _enemySpawner;
         private IBallSpawner _ballSpawner;
 
+        private PlayerConfig _playerConfig;
+
         [Inject]
-        private void Construct(GameStateMachine stateMachine, IAssetService assetService, IPlayerSpawner playerSpawner, IEnemySpawner enemySpawner, IBallSpawner ballSpawner)
+        private void Construct(GameStateMachine stateMachine, IAssetService assetService, GameplayModel gameplay, 
+            IPlayerSpawner playerSpawner, IEnemySpawner enemySpawner, IBallSpawner ballSpawner,
+            PlayerConfig playerConfig)
         {
             _stateMachine = stateMachine;
             _assetService = assetService;
+            _gameplay = gameplay;
             
             _playerSpawner = playerSpawner;
             _enemySpawner = enemySpawner;
             _ballSpawner = ballSpawner;
+
+            _playerConfig = playerConfig;
         }
         
         private void Start()
@@ -44,7 +54,9 @@ namespace CodeBase.Presenters
         }
 
         private void GameplayLoop()
-        {}
+        {
+            DetectEndGame();
+        }
 
         private void OnGameplayStarted()
         {
@@ -58,6 +70,16 @@ namespace CodeBase.Presenters
             _playerSpawner.Despawn();
             _enemySpawner.Despawn();
             _ballSpawner.Despawn();
+        }
+        
+        private void DetectEndGame()
+        {
+            if (_gameplay.CurrentEnemyScore.Value >= _playerConfig.attempts)
+            {
+                OnGameplayEnded();
+                
+                _stateMachine.Enter<BootstrapState>();
+            }
         }
     }
 }

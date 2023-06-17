@@ -16,5 +16,13 @@ MonoBehaviour:
     attempts: 10
     speed: 5
     spawnPosition: {x: 7.5, y: 0, z: -1}
+  enemy:
+    speed: 5
+    spawnPosition: {x: -7.5, y: 0, z: -1}
+  ball:
+    speed: 2.5
+    spawnPosition: {x: 0, y: 0, z: -1}
+    velocity: {x: 0, y: 0, z: 0}
+    bounceStrength: 5
   level:
-    bounds: {x: 7.5, y: 3.5, z: 11}
+    bounds: {x: 9, y: 4.5, z: 11}

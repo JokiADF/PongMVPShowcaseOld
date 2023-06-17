@@ -7,8 +7,6 @@ namespace CodeBase.Model
     [Serializable]
     public class EnemyConfig
     {
-        [Tooltip("Number of attempts.")]
-        public int attempts = 10;
         [Tooltip("Vertical speed in m/s.")]
         public float speed = 5.0f;
         [Tooltip("Position of the player at start.")]
@@ -18,8 +16,6 @@ namespace CodeBase.Model
     public class EnemyModel
     {
         public Vector3ReactiveProperty Position { get; private set; }
-        public ReactiveProperty<int> Attempts { get; private set; }
-        public ReadOnlyReactiveProperty<bool> IsDead { get; private set; }
         
         private readonly EnemyConfig _enemyConfig;
         private readonly LevelConfig _levelConfig;
@@ -30,18 +26,10 @@ namespace CodeBase.Model
             _levelConfig = levelConfig;
 
             Position = new Vector3ReactiveProperty(_enemyConfig.spawnPosition);
-            Attempts = new ReactiveProperty<int>(_enemyConfig.attempts);
-
-            IsDead = Attempts
-                .Select(attempts => attempts <= 0)
-                .ToReadOnlyReactiveProperty();
         }
 
-        public void Reset()
-        {
+        public void Reset() => 
             Position.Value = _enemyConfig.spawnPosition;
-            Attempts.Value = _enemyConfig.attempts;
-        }
 
         public void Move(Vector3 target, float deltaTime)
         {
