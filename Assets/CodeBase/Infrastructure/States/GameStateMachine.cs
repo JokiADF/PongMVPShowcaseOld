@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using CodeBase.Services.AssetManagement;
-using CodeBase.Services.Spawners.Player;
-using UnityEngine;
+using CodeBase.Services.Spawners.Result;
+using UniRx;
 
 namespace CodeBase.Infrastructure.States
 {
@@ -11,15 +11,18 @@ namespace CodeBase.Infrastructure.States
         private readonly Dictionary<Type, IExitableState> _states;
         private IExitableState _activeState;
 
-        public Type ActiveStateType => _activeState.GetType();
+        public ReactiveProperty<Type> ActiveStateType => new (_activeState.GetType());
 
         public GameStateMachine(SceneLoader sceneLoader, IAssetService assetService)
         {
             _states = new Dictionary<Type, IExitableState>
             {
                 [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader),
+                [typeof(LoadLobbyState)] = new LoadLobbyState(this, sceneLoader, assetService),
+                [typeof(LobbyLoopState)] = new LobbyLoopState(this, sceneLoader),
                 [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, assetService),
-                [typeof(GameLoopState)] = new GameLoopState(this, sceneLoader),
+                [typeof(GameLoopState)] = new GameLoopState(),
+                [typeof(ResultLoopState)] = new ResultLoopState()
             };
         }
         

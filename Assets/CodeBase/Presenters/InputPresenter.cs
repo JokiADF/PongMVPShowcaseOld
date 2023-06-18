@@ -31,7 +31,7 @@ namespace CodeBase.Presenters
 
             Observable
                 .EveryUpdate()
-                .Where(_ => _stateMachine.ActiveStateType == typeof(GameLoopState))
+                .Where(_ => _stateMachine.ActiveStateType.Value == typeof(GameLoopState))
                 .Subscribe(_ =>
             {
 #if UNITY_EDITOR
@@ -41,6 +41,10 @@ namespace CodeBase.Presenters
 #endif
             })
                 .AddTo(this);
+        }
+        
+        public class Factory : PlaceholderFactory<Object, InputPresenter>
+        {
         }
     }
 }

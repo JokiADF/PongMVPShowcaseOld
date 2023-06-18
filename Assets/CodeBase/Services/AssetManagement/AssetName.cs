@@ -9,6 +9,13 @@ namespace CodeBase.Services.AssetManagement
             public const string Ball = "Ball";
         }
 
+        public class UI
+        {
+            public const string Gameplay = "Gameplay";
+            public const string Input = "Input";
+            public const string Results = "Results";
+        }
+
         public class Audio
         {
         }

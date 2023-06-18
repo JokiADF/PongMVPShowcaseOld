@@ -11,7 +11,7 @@ namespace CodeBase.Infrastructure.States
         
         private readonly GameStateMachine _stateMachine;
         private readonly SceneLoader _sceneLoader;
-        private IAssetService _assetService;
+        private readonly IAssetService _assetService;
         
         public LoadLevelState(GameStateMachine stateMachine, SceneLoader sceneLoader, IAssetService assetService)
         {
@@ -35,7 +35,11 @@ namespace CodeBase.Infrastructure.States
             await _assetService.Load<GameObject>(AssetName.Objects.Player);
             await _assetService.Load<GameObject>(AssetName.Objects.Enemy);
             await _assetService.Load<GameObject>(AssetName.Objects.Ball);
-            
+
+            await _assetService.Load<GameObject>(AssetName.UI.Gameplay);
+            await _assetService.Load<GameObject>(AssetName.UI.Results);
+            await _assetService.Load<GameObject>(AssetName.UI.Input);
+
             await _assetService.Load<Material>(AssetName.Materials.Background);
         }
 

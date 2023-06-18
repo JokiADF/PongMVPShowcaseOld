@@ -3,7 +3,11 @@ using CodeBase.Model;
 using CodeBase.Services.AssetManagement;
 using CodeBase.Services.Spawners.Ball;
 using CodeBase.Services.Spawners.Enemy;
+using CodeBase.Services.Spawners.Gameplay;
+using CodeBase.Services.Spawners.Input;
 using CodeBase.Services.Spawners.Player;
+using CodeBase.Services.Spawners.Result;
+using JetBrains.Annotations;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -21,23 +25,36 @@ namespace CodeBase.Presenters
         private IPlayerSpawner _playerSpawner;
         private IEnemySpawner _enemySpawner;
         private IBallSpawner _ballSpawner;
+        
+        private IGameplaySpawner _gameplaySpawner;
+        private IResultsSpawner _resultsSpawner;
+        private IInputSpawner _inputSpawner;
 
         private PlayerConfig _playerConfig;
 
         [Inject]
-        private void Construct(GameStateMachine stateMachine, IAssetService assetService, GameplayModel gameplay, 
-            IPlayerSpawner playerSpawner, IEnemySpawner enemySpawner, IBallSpawner ballSpawner,
-            PlayerConfig playerConfig)
+        private void Construct(GameStateMachine stateMachine, IAssetService assetService, GameplayModel gameplay, PlayerConfig playerConfig)
         {
             _stateMachine = stateMachine;
             _assetService = assetService;
             _gameplay = gameplay;
-            
+
+            _playerConfig = playerConfig;
+        }
+
+        [Inject]
+        private void ConstructSpawners(IPlayerSpawner playerSpawner, IEnemySpawner enemySpawner,
+            IBallSpawner ballSpawner, IGameplaySpawner gameplaySpawner, IResultsSpawner resultsSpawner, 
+            IInputSpawner inputSpawner)
+        {
             _playerSpawner = playerSpawner;
             _enemySpawner = enemySpawner;
             _ballSpawner = ballSpawner;
 
-            _playerConfig = playerConfig;
+            _gameplaySpawner = gameplaySpawner;
+            _resultsSpawner = resultsSpawner;
+            
+            _inputSpawner = inputSpawner;
         }
         
         private void Start()
@@ -48,7 +65,7 @@ namespace CodeBase.Presenters
             OnGameplayStarted();
             
             Observable.EveryUpdate()
-                .Where(_ => _stateMachine.ActiveStateType == typeof(GameLoopState))
+                .Where(_ => _stateMachine.ActiveStateType.Value == typeof(GameLoopState))
                 .Subscribe(_ => GameplayLoop())
                 .AddTo(this);
         }
@@ -63,6 +80,9 @@ namespace CodeBase.Presenters
             _playerSpawner.Spawn();
             _enemySpawner.Spawn();
             _ballSpawner.Spawn();
+
+            _gameplaySpawner.Spawn();
+            _inputSpawner.Spawn();
         }
 
         private void OnGameplayEnded()
@@ -70,6 +90,9 @@ namespace CodeBase.Presenters
             _playerSpawner.Despawn();
             _enemySpawner.Despawn();
             _ballSpawner.Despawn();
+
+            _gameplaySpawner.Despawn();
+            _inputSpawner.Despawn();
         }
         
         private void DetectEndGame()
@@ -78,7 +101,8 @@ namespace CodeBase.Presenters
             {
                 OnGameplayEnded();
                 
-                _stateMachine.Enter<BootstrapState>();
+                _resultsSpawner.Spawn();
+                _stateMachine.Enter<ResultLoopState>();
             }
         }
     }

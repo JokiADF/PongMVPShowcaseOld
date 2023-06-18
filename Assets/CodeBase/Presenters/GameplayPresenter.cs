@@ -53,5 +53,9 @@ namespace CodeBase.Presenters
                 })
                 .AddTo(this);
         }
+        
+        public class Factory : PlaceholderFactory<Object, GameplayPresenter>
+        {
+        }
     }
 }

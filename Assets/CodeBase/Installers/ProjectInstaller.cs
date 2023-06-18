@@ -2,6 +2,7 @@ using CodeBase.Infrastructure;
 using CodeBase.Infrastructure.States;
 using CodeBase.Presenters;
 using CodeBase.Services.AssetManagement;
+using CodeBase.Services.Storage;
 using UnityEngine;
 using Zenject;
 
@@ -22,6 +23,9 @@ namespace CodeBase.Installers
         {
             Container
                 .BindInterfacesAndSelfTo<AddressablesService>()
+                .AsSingle();
+            Container
+                .BindInterfacesAndSelfTo<StorageService>()
                 .AsSingle();
         }
 
