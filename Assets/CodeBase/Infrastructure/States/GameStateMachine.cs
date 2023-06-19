@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using CodeBase.Services.AssetManagement;
-using CodeBase.Services.Spawners.Result;
 using UniRx;
 
 namespace CodeBase.Infrastructure.States
@@ -18,11 +17,8 @@ namespace CodeBase.Infrastructure.States
             _states = new Dictionary<Type, IExitableState>
             {
                 [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader),
-                [typeof(LoadLobbyState)] = new LoadLobbyState(this, sceneLoader, assetService),
-                [typeof(LobbyLoopState)] = new LobbyLoopState(this, sceneLoader),
                 [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, assetService),
                 [typeof(GameLoopState)] = new GameLoopState(),
-                [typeof(ResultLoopState)] = new ResultLoopState()
             };
         }
         

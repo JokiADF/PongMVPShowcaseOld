@@ -1,7 +1,6 @@
 ﻿using CodeBase.Services.AssetManagement;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Zenject;
 
 namespace CodeBase.Infrastructure.States
 {
@@ -35,11 +34,8 @@ namespace CodeBase.Infrastructure.States
             await _assetService.Load<GameObject>(AssetName.Objects.Player);
             await _assetService.Load<GameObject>(AssetName.Objects.Enemy);
             await _assetService.Load<GameObject>(AssetName.Objects.Ball);
-
-            await _assetService.Load<GameObject>(AssetName.UI.Gameplay);
-            await _assetService.Load<GameObject>(AssetName.UI.Results);
             await _assetService.Load<GameObject>(AssetName.UI.Input);
-
+            
             await _assetService.Load<Material>(AssetName.Materials.Background);
         }
 

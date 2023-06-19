@@ -2,10 +2,8 @@ using CodeBase.Model;
 using CodeBase.Presenters;
 using CodeBase.Services.Spawners.Ball;
 using CodeBase.Services.Spawners.Enemy;
-using CodeBase.Services.Spawners.Gameplay;
 using CodeBase.Services.Spawners.Input;
 using CodeBase.Services.Spawners.Player;
-using CodeBase.Services.Spawners.Result;
 using UnityEngine;
 using Zenject;
 
@@ -16,9 +14,7 @@ namespace CodeBase.Installers
         public override void InstallBindings()
         {
             BindServices();
-            BindScores();
-            BindGameplay();
-            BindResults();
+            BindUGUI();
             
             BindPlayer();
             BindEnemy();
@@ -38,36 +34,19 @@ namespace CodeBase.Installers
                 .FromFactory<PrefabFactory<InputPresenter>>();
         }
 
-        private void BindScores()
+        private void BindUGUI()
         {
             Container
-                .Bind<ScoresModel>()
+                .Bind<UGUIStateModel>()
                 .AsSingle();
-        }
-
-        private void BindGameplay()
-        {
             Container
                 .Bind<GameplayModel>()
                 .AsSingle();
             Container
-                .BindInterfacesAndSelfTo<GameplaySpawner>()
+                .Bind<ScoresModel>()
                 .AsSingle();
-            Container
-                .BindFactory<Object, GameplayPresenter, GameplayPresenter.Factory>()
-                .FromFactory<PrefabFactory<GameplayPresenter>>();
         }
-
-        private void BindResults()
-        {
-            Container
-                .BindInterfacesAndSelfTo<ResultsSpawner>()
-                .AsSingle();
-            Container
-                .BindFactory<Object, ResultsPresenter, ResultsPresenter.Factory>()
-                .FromFactory<PrefabFactory<ResultsPresenter>>();
-        }
-
+        
         private void BindPlayer()
         {
             Container

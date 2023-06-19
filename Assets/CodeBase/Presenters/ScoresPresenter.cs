@@ -16,21 +16,21 @@ namespace CodeBase.Presenters
         [SerializeField] private VerticalLayoutGroup itemHolder;
 
         private ScoresModel _scores;
-        private GameStateMachine _gameState;
+        private UGUIStateModel _stateMachine;
 
         private BoundItemsContainer<ScoreItem> _scoresContainer;
 
         [Inject]
-        private void Construct(ScoresModel scores, GameStateMachine gameState)
+        private void Construct(ScoresModel scores, UGUIStateModel stateMachine)
         {
             _scores = scores;
-            _gameState = gameState;
+            _stateMachine = stateMachine;
         }
         
         private void Start()
         {
             buttonBack.OnClickAsObservable()
-                .Subscribe(_ => _gameState.Enter<LoadLobbyState>())
+                .Subscribe(_ => _stateMachine.State.Value = UGUIState.Menu)
                 .AddTo(this);
 
             _scoresContainer = new BoundItemsContainer<ScoreItem>(itemPrefab.gameObject, itemHolder.gameObject)
@@ -38,13 +38,16 @@ namespace CodeBase.Presenters
                 DestroyOnRemove = true
             };
 
-            _scoresContainer.ObserveAdd().Subscribe(e =>
-            {
-                if (e.GameObject.TryGetComponent(out TextMeshProUGUI item))
+            _scoresContainer
+                .ObserveAdd()
+                .Subscribe(text =>
                 {
-                    item.text = $"<color=#00ffff>{e.Model.score}</color> - {e.Model.date}";
-                }
-            }).AddTo(this);
+                    if (text.GameObject.TryGetComponent(out TextMeshProUGUI item))
+                    {
+                        item.text = $"<color=#00ffff>{text.Model.score}</color> - {text.Model.date}";
+                    }
+                })
+                .AddTo(this);
 
             _scoresContainer.Initialize(_scores.Scoreboard);
             _scoresContainer.AddTo(this);

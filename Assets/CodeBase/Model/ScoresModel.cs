@@ -26,13 +26,14 @@ namespace CodeBase.Model
         public ReactiveCollection<ScoreItem> Scoreboard { get; private set; }
 
         private readonly IStorageService _storageService;
-
-
+        
         public ScoresModel(IStorageService storageService)
         {
             _storageService = storageService;
             
             Scoreboard = new ReactiveCollection<ScoreItem>();
+            
+            Load();
         }
 
         public void Add(ScoreItem scoreItem)

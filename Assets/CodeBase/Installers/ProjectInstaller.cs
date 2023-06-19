@@ -1,5 +1,6 @@
 using CodeBase.Infrastructure;
 using CodeBase.Infrastructure.States;
+using CodeBase.Model;
 using CodeBase.Presenters;
 using CodeBase.Services.AssetManagement;
 using CodeBase.Services.Storage;

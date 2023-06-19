@@ -1,13 +1,9 @@
-using CodeBase.Infrastructure.States;
 using CodeBase.Model;
 using CodeBase.Services.AssetManagement;
 using CodeBase.Services.Spawners.Ball;
 using CodeBase.Services.Spawners.Enemy;
-using CodeBase.Services.Spawners.Gameplay;
 using CodeBase.Services.Spawners.Input;
 using CodeBase.Services.Spawners.Player;
-using CodeBase.Services.Spawners.Result;
-using JetBrains.Annotations;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -18,42 +14,34 @@ namespace CodeBase.Presenters
     {
         [SerializeField] private MeshRenderer background;
 
-        private GameStateMachine _stateMachine;
-        private IAssetService _assetService;
+        private UGUIStateModel _stateMachine;
         private GameplayModel _gameplay;
+        private IAssetService _assetService;
         
         private IPlayerSpawner _playerSpawner;
         private IEnemySpawner _enemySpawner;
         private IBallSpawner _ballSpawner;
-        
-        private IGameplaySpawner _gameplaySpawner;
-        private IResultsSpawner _resultsSpawner;
         private IInputSpawner _inputSpawner;
 
         private PlayerConfig _playerConfig;
 
         [Inject]
-        private void Construct(GameStateMachine stateMachine, IAssetService assetService, GameplayModel gameplay, PlayerConfig playerConfig)
+        private void Construct(UGUIStateModel stateMachine, GameplayModel gameplay, IAssetService assetService, PlayerConfig playerConfig)
         {
             _stateMachine = stateMachine;
-            _assetService = assetService;
             _gameplay = gameplay;
+            _assetService = assetService;
 
             _playerConfig = playerConfig;
         }
 
         [Inject]
         private void ConstructSpawners(IPlayerSpawner playerSpawner, IEnemySpawner enemySpawner,
-            IBallSpawner ballSpawner, IGameplaySpawner gameplaySpawner, IResultsSpawner resultsSpawner, 
-            IInputSpawner inputSpawner)
+            IBallSpawner ballSpawner, IInputSpawner inputSpawner)
         {
             _playerSpawner = playerSpawner;
             _enemySpawner = enemySpawner;
             _ballSpawner = ballSpawner;
-
-            _gameplaySpawner = gameplaySpawner;
-            _resultsSpawner = resultsSpawner;
-            
             _inputSpawner = inputSpawner;
         }
         
@@ -62,10 +50,13 @@ namespace CodeBase.Presenters
             background.sharedMaterial = _assetService.Get<Material>(AssetName.Materials.Background);
             background.enabled = true;
 
-            OnGameplayStarted();
+            _stateMachine.State
+                .Pairwise()
+                .Subscribe(OnStateTransition)
+                .AddTo(this);
             
             Observable.EveryUpdate()
-                .Where(_ => _stateMachine.ActiveStateType.Value == typeof(GameLoopState))
+                .Where(_ => _stateMachine.State.Value == UGUIState.Gameplay)
                 .Subscribe(_ => GameplayLoop())
                 .AddTo(this);
         }
@@ -75,13 +66,33 @@ namespace CodeBase.Presenters
             DetectEndGame();
         }
 
+        private void DetectEndGame()
+        {
+            if (_gameplay.CurrentEnemyScore.Value >= _playerConfig.attempts)
+            {
+                OnGameplayEnded();
+
+                _stateMachine.State.Value = UGUIState.Results;
+            }
+        }
+
+        private void OnStateTransition(Pair<UGUIState> transition)
+        {
+            if (transition.Current == UGUIState.Gameplay)
+            {
+                OnGameplayStarted();
+            }
+            else if (transition.Previous == UGUIState.Gameplay)
+            {
+                OnGameplayEnded();
+            }
+        }
+
         private void OnGameplayStarted()
         {
             _playerSpawner.Spawn();
             _enemySpawner.Spawn();
             _ballSpawner.Spawn();
-
-            _gameplaySpawner.Spawn();
             _inputSpawner.Spawn();
         }
 
@@ -90,20 +101,7 @@ namespace CodeBase.Presenters
             _playerSpawner.Despawn();
             _enemySpawner.Despawn();
             _ballSpawner.Despawn();
-
-            _gameplaySpawner.Despawn();
             _inputSpawner.Despawn();
-        }
-        
-        private void DetectEndGame()
-        {
-            if (_gameplay.CurrentEnemyScore.Value >= _playerConfig.attempts)
-            {
-                OnGameplayEnded();
-                
-                _resultsSpawner.Spawn();
-                _stateMachine.Enter<ResultLoopState>();
-            }
         }
     }
 }

@@ -11,6 +11,8 @@ namespace CodeBase.Services.AssetManagement
 
         public class UI
         {
+            public const string Menu = "Menu";
+            public const string Scores = "Scores";
             public const string Gameplay = "Gameplay";
             public const string Input = "Input";
             public const string Results = "Results";

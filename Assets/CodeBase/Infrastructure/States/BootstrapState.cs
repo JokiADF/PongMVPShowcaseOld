@@ -7,6 +7,7 @@ namespace CodeBase.Infrastructure.States
     public class BootstrapState : IState
     {
         private const string Initial = "Initial";
+        
         private readonly GameStateMachine _stateMachine;
         private readonly SceneLoader _sceneLoader;
 
@@ -21,10 +22,10 @@ namespace CodeBase.Infrastructure.States
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
             DOTween.Init();
             
-            _sceneLoader.Load(Initial, EnterLoadLevel);
+            _sceneLoader.Load(Initial, EnterLoadLobby);
         }
 
-        private void EnterLoadLevel() => 
+        private void EnterLoadLobby() => 
             _stateMachine.Enter<LoadLevelState>();
 
         public void Exit()

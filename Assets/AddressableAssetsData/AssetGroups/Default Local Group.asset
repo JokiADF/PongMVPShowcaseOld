@@ -41,12 +41,12 @@ MonoBehaviour:
     m_Address: Input
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: 9aef34964dfb47b48bc773bb0428d183
-    m_Address: Gameplay
+  - m_GUID: c1394ba9fe152a64f93c2d6a96ed03ab
+    m_Address: Results
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: c1394ba9fe152a64f93c2d6a96ed03ab
-    m_Address: Result
+  - m_GUID: b9b3ac66ab795484bbf2ca563fcaed28
+    m_Address: Scores
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0
