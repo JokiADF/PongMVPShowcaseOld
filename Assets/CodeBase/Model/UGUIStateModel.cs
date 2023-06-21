@@ -1,4 +1,4 @@
-using SpaceInvaders.Helpers;
+using CodeBase.Helpers;
 
 namespace CodeBase.Model
 {

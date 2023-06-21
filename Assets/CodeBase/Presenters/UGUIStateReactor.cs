@@ -1,5 +1,5 @@
+using CodeBase.Helpers;
 using CodeBase.Model;
-using SpaceInvaders.Helpers;
 using Zenject;
 
 namespace CodeBase.Presenters

@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-namespace SpaceInvaders.Helpers
+namespace CodeBase.Helpers
 {
     public abstract class StateReactor<T> : MonoBehaviour where T : Enum
     {
