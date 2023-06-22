@@ -26,3 +26,5 @@ MonoBehaviour:
     bounceStrength: 5
   level:
     bounds: {x: 9, y: 4, z: 11}
+  audio:
+    musicVolume: 0.1

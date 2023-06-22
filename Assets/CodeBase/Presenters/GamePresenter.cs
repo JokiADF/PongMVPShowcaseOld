@@ -1,9 +1,11 @@
 using CodeBase.Model;
 using CodeBase.Services.AssetManagement;
+using CodeBase.Services.Audio;
 using CodeBase.Services.Spawners.Ball;
 using CodeBase.Services.Spawners.Enemy;
 using CodeBase.Services.Spawners.Input;
 using CodeBase.Services.Spawners.Player;
+using SpaceInvaders.Services;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -22,17 +24,22 @@ namespace CodeBase.Presenters
         private IEnemySpawner _enemySpawner;
         private IBallSpawner _ballSpawner;
         private IInputSpawner _inputSpawner;
+        private IAudioService _audioService;
 
         private PlayerConfig _playerConfig;
+        private AudioConfig _audioConfig;
 
         [Inject]
-        private void Construct(UGUIStateModel stateMachine, GameplayModel gameplay, IAssetService assetService, PlayerConfig playerConfig)
+        private void Construct(UGUIStateModel stateMachine, GameplayModel gameplay, IAssetService assetService, IAudioService audioService,
+            PlayerConfig playerConfig, AudioConfig audioConfig)
         {
             _stateMachine = stateMachine;
             _gameplay = gameplay;
             _assetService = assetService;
-
+            _audioService = audioService;
+            
             _playerConfig = playerConfig;
+            _audioConfig = audioConfig;
         }
 
         [Inject]
@@ -94,6 +101,8 @@ namespace CodeBase.Presenters
             _enemySpawner.Spawn();
             _ballSpawner.Spawn();
             _inputSpawner.Spawn();
+            
+            _audioService.PlayMusic(AssetName.Audio.Music, _audioConfig.musicVolume);
         }
 
         private void OnGameplayEnded()
@@ -102,6 +111,8 @@ namespace CodeBase.Presenters
             _enemySpawner.Despawn();
             _ballSpawner.Despawn();
             _inputSpawner.Despawn();
+            
+            _audioService.StopMusic();
         }
     }
 }

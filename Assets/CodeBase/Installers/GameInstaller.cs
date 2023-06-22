@@ -1,9 +1,11 @@
 using CodeBase.Model;
 using CodeBase.Presenters;
+using CodeBase.Services.Audio;
 using CodeBase.Services.Spawners.Ball;
 using CodeBase.Services.Spawners.Enemy;
 using CodeBase.Services.Spawners.Input;
 using CodeBase.Services.Spawners.Player;
+using CodeBase.Services.Storage;
 using UnityEngine;
 using Zenject;
 
@@ -13,8 +15,8 @@ namespace CodeBase.Installers
     {
         public override void InstallBindings()
         {
-            BindServices();
             BindUGUI();
+            BindServices();
             
             BindPlayer();
             BindEnemy();
@@ -24,14 +26,11 @@ namespace CodeBase.Installers
         private void BindServices()
         {
             Container
-                .Bind<InputModel>()
+                .BindInterfacesAndSelfTo<AudioService>()
                 .AsSingle();
             Container
-                .BindInterfacesAndSelfTo<InputSpawner>()
+                .BindInterfacesAndSelfTo<StorageService>()
                 .AsSingle();
-            Container
-                .BindFactory<Object, InputPresenter, InputPresenter.Factory>()
-                .FromFactory<PrefabFactory<InputPresenter>>();
         }
 
         private void BindUGUI()
@@ -45,6 +44,16 @@ namespace CodeBase.Installers
             Container
                 .Bind<ScoresModel>()
                 .AsSingle();
+            
+            Container
+                .Bind<InputModel>()
+                .AsSingle();
+            Container
+                .BindInterfacesAndSelfTo<InputSpawner>()
+                .AsSingle();
+            Container
+                .BindFactory<Object, InputPresenter, InputPresenter.Factory>()
+                .FromFactory<PrefabFactory<InputPresenter>>();
         }
         
         private void BindPlayer()

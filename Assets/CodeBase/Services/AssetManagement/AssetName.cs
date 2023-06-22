@@ -20,6 +20,10 @@ namespace CodeBase.Services.AssetManagement
 
         public class Audio
         {
+            public const string Click = "Click";
+            public const string Music = "Music";
+            public const string Clash = "Clash";
+            public const string Explosion = "Explosion";
         }
 
         public class Materials

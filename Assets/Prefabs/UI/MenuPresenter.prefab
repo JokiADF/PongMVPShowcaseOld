@@ -147,6 +147,7 @@ GameObject:
   - component: {fileID: 8502019516680181293}
   - component: {fileID: 3372633083957898625}
   - component: {fileID: 5021907305844418299}
+  - component: {fileID: 8653912993938616858}
   m_Layer: 5
   m_Name: ButtonPlay
   m_TagString: Untagged
@@ -257,6 +258,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8653912993938616858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3020687648870198061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa1613cb303bc81418c1f03b8fd64422, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4940359256923868140
 GameObject:
   m_ObjectHideFlags: 0
@@ -549,6 +562,7 @@ GameObject:
   - component: {fileID: 5147938727360774673}
   - component: {fileID: 5141318685173581341}
   - component: {fileID: 1902376362678042151}
+  - component: {fileID: 6937745956370312214}
   m_Layer: 5
   m_Name: ButtonScores
   m_TagString: Untagged
@@ -659,6 +673,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6937745956370312214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8834553463733995913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa1613cb303bc81418c1f03b8fd64422, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9054166847551197044
 GameObject:
   m_ObjectHideFlags: 0

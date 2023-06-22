@@ -1,6 +1,8 @@
 ﻿using CodeBase.Helpers;
 using CodeBase.Model;
+using CodeBase.Services.Audio;
 using DG.Tweening;
+using SpaceInvaders.Services;
 using TMPro;
 using UniRx;
 using UnityEngine;
@@ -17,12 +19,17 @@ namespace CodeBase.Presenters
 
         private GameplayModel _gameplay;
         private UGUIStateModel _stateMachine;
-
+        private IAudioService _audioService;
+        private AudioConfig _audioConfig;
+        
         [Inject]
-        private void Construct(GameplayModel gameplay, UGUIStateModel stateMachine)
+        private void Construct(GameplayModel gameplay, UGUIStateModel stateMachine, IAudioService audioService, AudioConfig audioConfig)
         {
             _gameplay = gameplay;
             _stateMachine = stateMachine;
+            
+            _audioService = audioService;
+            _audioConfig = audioConfig;
         }
 
         private void Start()
@@ -61,6 +68,8 @@ namespace CodeBase.Presenters
                 .Where(score => score.Current > score.Previous)
                 .Subscribe(_ =>
                 {
+                    _audioService.DuckMusic(0.025f, _audioConfig.musicVolume, 1.2f);
+                    
                     labelEnemyScore.rectTransform
                         .DOPunchScale(new Vector3(0.25f, 0.25f, 0f), 0.125f)
                         .SetEase(Ease.OutQuint)

@@ -58,7 +58,7 @@ namespace CodeBase.Model
             Velocity.Value += direction * _ballConfig.speed;
         }
         
-        public void Move(float deltaTime)
+        public bool Move(float deltaTime)
         {
             var deltaPos = Velocity.Value * _ballConfig.speed * deltaTime;
 
@@ -71,10 +71,12 @@ namespace CodeBase.Model
                 
                 Reset();
                 
-                return;
+                return true;
             }
 
             Position.Value += deltaPos;
+
+            return false;
         }
 
         public void Clash(Collision collision)

@@ -1,4 +1,5 @@
 using CodeBase.Model;
+using CodeBase.Services.Audio;
 using UnityEngine;
 using Zenject;
 
@@ -11,6 +12,7 @@ namespace CodeBase.Installers
         [SerializeField] private EnemyConfig enemy;
         [SerializeField] private BallConfig ball;
         [SerializeField] private LevelConfig level;
+        [SerializeField] private AudioConfig audio;
 
         public override void InstallBindings()
         {
@@ -18,6 +20,7 @@ namespace CodeBase.Installers
             Container.BindInstances(enemy);
             Container.BindInstances(ball);
             Container.BindInstances(level);
+            Container.BindInstances(audio);
         }
     }
 }
