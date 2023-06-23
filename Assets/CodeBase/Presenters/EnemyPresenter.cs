@@ -7,6 +7,9 @@ namespace CodeBase.Presenters
 {
     public class EnemyPresenter : MonoBehaviour
     {
+        [SerializeField] private ParticleSystem thrusterUp;
+        [SerializeField] private ParticleSystem thrusterDown;
+        
         private EnemyModel _enemy;
         private BallModel _ball;
 
@@ -30,8 +33,43 @@ namespace CodeBase.Presenters
                 .AddTo(this);
         }
         
-        private void Move() => 
+        private void Move()
+        {
             _enemy.Move(_ball.Position.Value, Time.deltaTime);
+            
+            ManageThrusterParticles(_ball.Position.Value);
+        }
+
+        private void ManageThrusterParticles(Vector3 movePos)
+        {
+            if (movePos.y > transform.position.y)
+            {
+                StopThruster(thrusterUp);
+                StartThruster(thrusterDown);
+            }
+            else if (movePos.y < transform.position.y)
+            {
+                StartThruster(thrusterUp);
+                StopThruster(thrusterDown);
+            }
+            else
+            {
+                StopThruster(thrusterUp);
+                StopThruster(thrusterDown);
+            }
+        }
+
+        private void StartThruster(ParticleSystem particle)
+        {
+            if (!particle.isPlaying) 
+                particle.Play();
+        }
+
+        private void StopThruster(ParticleSystem particle)
+        {
+            if (particle.isPlaying) 
+                particle.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        }
 
         public class Factory : PlaceholderFactory<Object, EnemyPresenter>
         {

@@ -7,6 +7,7 @@ namespace CodeBase.Services.AssetManagement
             public const string Player = "Player";
             public const string Enemy = "Enemy";
             public const string Ball = "Ball";
+            public const string Explosion = "Explosion";
         }
 
         public class UI

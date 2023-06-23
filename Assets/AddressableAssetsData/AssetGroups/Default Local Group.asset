@@ -65,6 +65,10 @@ MonoBehaviour:
     m_Address: Music
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 0245367b29d0a93448c14500081b81ae
+    m_Address: Explosion
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 046f44444bb492241a173576b84cd31d, type: 2}
   m_SchemaSet:

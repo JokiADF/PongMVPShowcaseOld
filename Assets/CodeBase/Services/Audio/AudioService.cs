@@ -1,7 +1,6 @@
 using System;
 using CodeBase.Services.AssetManagement;
 using DG.Tweening;
-using SpaceInvaders.Services;
 using UnityEngine;
 
 namespace CodeBase.Services.Audio
@@ -21,10 +20,8 @@ namespace CodeBase.Services.Audio
         private AudioSource _music;
         private Tween _tween;
 
-        public AudioService(IAssetService assetService)
-        {
+        public AudioService(IAssetService assetService) => 
             _assetService = assetService;
-        }
 
         public void PlaySfx(string key, float volume)
         {

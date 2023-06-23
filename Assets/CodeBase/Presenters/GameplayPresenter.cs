@@ -1,8 +1,8 @@
 ﻿using CodeBase.Helpers;
 using CodeBase.Model;
 using CodeBase.Services.Audio;
+using CodeBase.Services.CameraShaker;
 using DG.Tweening;
-using SpaceInvaders.Services;
 using TMPro;
 using UniRx;
 using UnityEngine;
@@ -16,20 +16,16 @@ namespace CodeBase.Presenters
         [SerializeField] private Button buttonExit;
         [SerializeField] private TextMeshPro labelPlayerScore;
         [SerializeField] private TextMeshPro labelEnemyScore;
+        [SerializeField] private Image imageVignette;
 
         private GameplayModel _gameplay;
         private UGUIStateModel _stateMachine;
-        private IAudioService _audioService;
-        private AudioConfig _audioConfig;
         
         [Inject]
-        private void Construct(GameplayModel gameplay, UGUIStateModel stateMachine, IAudioService audioService, AudioConfig audioConfig)
+        private void Construct(GameplayModel gameplay, UGUIStateModel stateMachine)
         {
             _gameplay = gameplay;
             _stateMachine = stateMachine;
-            
-            _audioService = audioService;
-            _audioConfig = audioConfig;
         }
 
         private void Start()
@@ -68,7 +64,10 @@ namespace CodeBase.Presenters
                 .Where(score => score.Current > score.Previous)
                 .Subscribe(_ =>
                 {
-                    _audioService.DuckMusic(0.025f, _audioConfig.musicVolume, 1.2f);
+                    imageVignette.DOFade(0.2f, 0.5f)
+                        .SetLoops(2, LoopType.Yoyo)
+                        .SetEase(Ease.OutQuint)
+                        .OnStart(() => imageVignette.color = new Color(1f, 1f, 1f, 0f));
                     
                     labelEnemyScore.rectTransform
                         .DOPunchScale(new Vector3(0.25f, 0.25f, 0f), 0.125f)

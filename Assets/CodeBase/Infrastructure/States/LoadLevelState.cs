@@ -34,6 +34,7 @@ namespace CodeBase.Infrastructure.States
             await _assetService.Load<GameObject>(AssetName.Objects.Player);
             await _assetService.Load<GameObject>(AssetName.Objects.Enemy);
             await _assetService.Load<GameObject>(AssetName.Objects.Ball);
+            await _assetService.Load<GameObject>(AssetName.Objects.Explosion);
             await _assetService.Load<GameObject>(AssetName.UI.Input);
             
             await _assetService.Load<AudioClip>(AssetName.Audio.Click);

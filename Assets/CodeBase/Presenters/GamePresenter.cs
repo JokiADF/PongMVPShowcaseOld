@@ -5,7 +5,6 @@ using CodeBase.Services.Spawners.Ball;
 using CodeBase.Services.Spawners.Enemy;
 using CodeBase.Services.Spawners.Input;
 using CodeBase.Services.Spawners.Player;
-using SpaceInvaders.Services;
 using UniRx;
 using UnityEngine;
 using Zenject;

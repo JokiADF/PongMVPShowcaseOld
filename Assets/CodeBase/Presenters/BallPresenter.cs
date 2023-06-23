@@ -1,6 +1,7 @@
 ﻿using CodeBase.Model;
 using CodeBase.Services.AssetManagement;
-using SpaceInvaders.Services;
+using CodeBase.Services.Audio;
+using CodeBase.Services.Spawners.Explosion;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
@@ -12,12 +13,14 @@ namespace CodeBase.Presenters
     {
         private BallModel _ball;
         private IAudioService _audioService;
-        
+        private IExplosionSpawner _explosionSpawner;
+
         [Inject]
-        private void Construct(BallModel ball, IAudioService audioService)
+        private void Construct(BallModel ball, IAudioService audioService, IExplosionSpawner explosionSpawner)
         {
             _ball = ball;
             _audioService = audioService;
+            _explosionSpawner = explosionSpawner;
         }
         
         private void Start()
@@ -38,13 +41,16 @@ namespace CodeBase.Presenters
 
             this
                 .OnCollisionEnterAsObservable()
-                .Subscribe(collision =>
-                {
-                    _ball.Clash(collision);
-                    
-                    _audioService.PlaySfx(AssetName.Audio.Clash, 0.1f);
-                })
+                .Subscribe(Clash)
                 .AddTo(this);
+        }
+
+        private void Clash(Collision collision)
+        {
+            _ball.Clash(collision);
+
+            _audioService.PlaySfx(AssetName.Audio.Clash, 0.1f);
+            _explosionSpawner.Spawn(transform.position);
         }
 
         private bool Move() =>

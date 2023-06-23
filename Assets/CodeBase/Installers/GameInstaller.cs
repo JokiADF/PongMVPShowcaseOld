@@ -1,8 +1,11 @@
 using CodeBase.Model;
 using CodeBase.Presenters;
+using CodeBase.Services.AssetManagement;
 using CodeBase.Services.Audio;
+using CodeBase.Services.CameraShaker;
 using CodeBase.Services.Spawners.Ball;
 using CodeBase.Services.Spawners.Enemy;
+using CodeBase.Services.Spawners.Explosion;
 using CodeBase.Services.Spawners.Input;
 using CodeBase.Services.Spawners.Player;
 using CodeBase.Services.Storage;
@@ -13,14 +16,23 @@ namespace CodeBase.Installers
 {
     public class GameInstaller : MonoInstaller
     {
+        private IAssetService _assetService;
+
+        [Inject]
+        private void Construct(IAssetService assetService) =>
+            _assetService = assetService;
+        
         public override void InstallBindings()
         {
             BindUGUI();
             BindServices();
+            BindInput();
             
             BindPlayer();
             BindEnemy();
             BindBall();
+            
+            BindExplosions();
         }
 
         private void BindServices()
@@ -30,6 +42,9 @@ namespace CodeBase.Installers
                 .AsSingle();
             Container
                 .BindInterfacesAndSelfTo<StorageService>()
+                .AsSingle();
+            Container
+                .BindInterfacesAndSelfTo<CameraShaker>()
                 .AsSingle();
         }
 
@@ -44,7 +59,10 @@ namespace CodeBase.Installers
             Container
                 .Bind<ScoresModel>()
                 .AsSingle();
-            
+        }
+
+        private void BindInput()
+        {
             Container
                 .Bind<InputModel>()
                 .AsSingle();
@@ -93,6 +111,16 @@ namespace CodeBase.Installers
             Container
                 .BindFactory<Object, BallPresenter, BallPresenter.Factory>()
                 .FromFactory<PrefabFactory<BallPresenter>>();
+        }
+        
+        private void BindExplosions()
+        {
+            Container
+                .BindInterfacesAndSelfTo<ExplosionSpawner>()
+                .AsSingle();
+            Container.BindFactory<Vector3, ExplosionPresenter, ExplosionPresenter.Factory>()
+                .FromMonoPoolableMemoryPool( x => 
+                    x.WithInitialSize(4).FromComponentInNewPrefab(_assetService.Get<GameObject>(AssetName.Objects.Explosion)).UnderTransformGroup("ExplosionPool"));
         }
     }
 }

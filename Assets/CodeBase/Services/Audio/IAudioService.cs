@@ -1,4 +1,4 @@
-namespace SpaceInvaders.Services
+namespace CodeBase.Services.Audio
 {
     public interface IAudioService
     {

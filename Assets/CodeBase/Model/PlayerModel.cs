@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
 
@@ -8,11 +9,13 @@ namespace CodeBase.Model
     public class PlayerConfig
     {
         [Tooltip("Number of attempts.")]
-        public int attempts = 1;
+        public int attempts = 10;
         [Tooltip("Vertical speed in m/s.")]
         public float speed = 5.0f;
         [Tooltip("Position of the player at start.")]
         public Vector3 spawnPosition = new Vector3(7.5f, 0f, -1f);
+        [Tooltip("Duration of invulnerability in seconds.")]
+        public float invulnerability = 3.0f;
     }
 
     [Serializable]
@@ -43,7 +46,9 @@ namespace CodeBase.Model
     
     public class PlayerModel
     {
+        public IntReactiveProperty Attempts { get; private set; }
         public Vector3ReactiveProperty Position { get; private set; }
+        public ReactiveProperty<bool> IsInvulnerable { get; private set; }
         
         private readonly PlayerConfig _playerConfig;
         private readonly LevelConfig _levelConfig;
@@ -53,11 +58,17 @@ namespace CodeBase.Model
             _playerConfig = playerConfig;
             _levelConfig = levelConfig;
 
+            Attempts = new IntReactiveProperty(_playerConfig.attempts);
             Position = new Vector3ReactiveProperty(_playerConfig.spawnPosition);
+            IsInvulnerable = new ReactiveProperty<bool>(false);
         }
 
-        public void Reset() => 
+        public void Reset()
+        {
+            Attempts.Value = _playerConfig.attempts;
             Position.Value = _playerConfig.spawnPosition;
+            IsInvulnerable.Value = false;
+        }
 
         public void Move(float vertical, float deltaTime)
         {
@@ -67,6 +78,22 @@ namespace CodeBase.Model
                 return;
 
             Position.Value += deltaPos;
+        }
+
+        public void OnHit() => 
+            Attempts.Value--;
+
+        public async UniTask<bool> DamageAsync()
+        {
+            if (IsInvulnerable.Value)
+                return false;
+
+            IsInvulnerable.Value = true;
+
+            await UniTask.Delay(TimeSpan.FromSeconds(_playerConfig.invulnerability));
+            IsInvulnerable.Value = false;
+
+            return true;
         }
     }
 }
