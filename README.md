@@ -1,5 +1,7 @@
 # PongMVPShowcase
 
+> **IMPORTANT!** This project is outdated. New version of the [project](https://github.com/JokiADF/PongShowcase).
+
 Start of development 11.06.23.
 End of development 23.06.23
 
